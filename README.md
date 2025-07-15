@@ -41,4 +41,4 @@ Trabalhp/
 - **Avaliação:** Métricas de acurácia, precisão, revocação e f1-score.
 
 ## Créditos
-- Integrantes do grupo: (Preencha aqui) 
+- Integrantes do grupo:
