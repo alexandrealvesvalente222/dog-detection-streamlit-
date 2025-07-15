@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Trabalho 01 - VCAP: Detecção de Cachorros com HOG + SVM</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f7f7f7;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: #fff;
+            padding: 30px 40px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0001;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #2c3e50;
+        }
+
+        h1 {
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        code,
+        pre {
+            background: #f0f0f0;
+            border-radius: 4px;
+            padding: 2px 6px;
+        }
+
+        .section {
+            margin-bottom: 32px;
+        }
+
+        .metric-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 10px;
+        }
+
+        .metric-table th,
+        .metric-table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .metric-table th {
+            background: #eaf6fb;
+        }
+
+        .img-example {
+            max-width: 180px;
+            border-radius: 6px;
+            margin: 8px;
+            border: 1px solid #ccc;
+        }
+
+        .code-block {
+            background: #f4f4f4;
+            border-radius: 6px;
+            padding: 12px;
+            margin: 10px 0;
+            font-size: 15px;
+        }
+
+        ul {
+            margin-left: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>Trabalho 01 - VCAP<br>Detecção de Cachorros com HOG + SVM</h1>
+
+        <div class="section">
+            <h2>1. Objetivo</h2>
+            <p>O objetivo deste trabalho é implementar um pipeline clássico de visão computacional para detectar
+                cachorros em imagens, utilizando descritores HOG e um classificador SVM, avaliando o desempenho do
+                sistema.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Aplicação Escolhida</h2>
+            <ul>
+                <li><b>Aplicação:</b> Detecção de cachorros em imagens.</li>
+                <li><b>Banco de dados:</b> <a href="https://www.cs.toronto.edu/~kriz/cifar.html"
+                        target="_blank">CIFAR-10</a> (10 classes, 60.000 imagens 32x32 RGB)</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>3. Pipeline Clássico</h2>
+            <ol>
+                <li><b>Pré-processamento:</b> Aumento da resolução das imagens para 96x96 pixels.</li>
+                <li><b>Extração de descritores:</b> HOG (Histogram of Oriented Gradients).</li>
+                <li><b>Classificação:</b> SVM Linear (LinearSVC).</li>
+                <li><b>Avaliação:</b> Métricas de acurácia, precisão, revocação e f1-score.</li>
+            </ol>
+        </div>
+
+        <div class="section">
+            <h2>4. Código Principal</h2>
+            <div class="code-block">
+                <pre><code>from skimage.feature import hog
+from skimage.color import rgb2gray
+from skimage.transform import resize
+from sklearn.svm import LinearSVC
+
+# Extração de HOG
+hog_feat = hog(resize(rgb2gray(img), (96, 96)),
+               pixels_per_cell=(8, 8),
+               cells_per_block=(2, 2), feature_vector=True)
+
+# Treinamento SVM
+clf = LinearSVC()
+clf.fit(X_train, y_train)
+
+# Previsão
+y_pred = clf.predict(X_test)
+</code></pre>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>5. Métricas de Avaliação</h2>
+            <table class="metric-table">
+                <tr>
+                    <th></th>
+                    <th>Precisão</th>
+                    <th>Revocação</th>
+                    <th>F1-score</th>
+                    <th>Suporte</th>
+                </tr>
+                <tr>
+                    <td>Não-cachorro</td>
+                    <td>0.69</td>
+                    <td>0.69</td>
+                    <td>0.69</td>
+                    <td>1164</td>
+                </tr>
+                <tr>
+                    <td>Cachorro</td>
+                    <td>0.71</td>
+                    <td>0.71</td>
+                    <td>0.71</td>
+                    <td>1236</td>
+                </tr>
+                <tr>
+                    <td><b>Acurácia</b></td>
+                    <td colspan="4">0.70</td>
+                </tr>
+            </table>
+            <p><i>Obs: O objetivo não é obter métricas altas, mas sim entender o pipeline clássico.</i></p>
+        </div>
+
+        <div class="section">
+            <h2>6. Exemplos de Resultados</h2>
+            <p><b>Exemplos de acertos:</b></p>
+            <img src="../resultados/exemplo_acerto1.png" class="img-example" alt="Acerto 1">
+            <img src="../resultados/exemplo_acerto2.png" class="img-example" alt="Acerto 2">
+            <img src="../resultados/exemplo_acerto3.png" class="img-example" alt="Acerto 3">
+            <p><b>Exemplos de erros:</b></p>
+            <img src="../resultados/exemplo_erro1.png" class="img-example" alt="Erro 1">
+            <img src="../resultados/exemplo_erro2.png" class="img-example" alt="Erro 2">
+            <img src="../resultados/exemplo_erro3.png" class="img-example" alt="Erro 3">
+            <p style="font-size: 0.95em; color: #888;">(Substitua as imagens acima por exemplos do seu próprio
+                resultado.)</p>
+        </div>
+
+        <div class="section">
+            <h2>7. Conclusão</h2>
+            <ul>
+                <li>Pipeline clássico de visão computacional implementado com sucesso.</li>
+                <li>Foi possível detectar cachorros em imagens do CIFAR-10 com desempenho razoável.</li>
+                <li>O trabalho proporcionou experiência prática com descritores e classificadores clássicos.</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h3>Integrantes do grupo:</h3>
+            <ul>
+                <li>Nome 1</li>
+                <li>Nome 2</li>
+                <li>Nome 3</li>
+            </ul>
+            <p style="font-size: 0.95em; color: #888;">(Preencha com os nomes dos integrantes do grupo.)</p>
+        </div>
+    </div>
+</body>
+
+</html>

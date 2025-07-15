@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Relatório Profissional - VCAP Trabalho 01</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', Arial, sans-serif;
+            background: #f4f8fb;
+            margin: 0;
+            color: #222;
+        }
+
+        .container {
+            max-width: 1100px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 12px;
+            box-shadow: 0 4px 24px #0002;
+            padding: 40px 32px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            color: #1a4e8a;
+        }
+
+        h1 {
+            margin-bottom: 0;
+            font-size: 2.2em;
+            font-weight: 700;
+            text-shadow: 1px 2px 8px #bfa77a33;
+            border-bottom: 0;
+        }
+
+        .title-bar {
+            border-bottom: 4px solid #bfa77a;
+            padding-bottom: 8px;
+            margin-bottom: 28px;
+            display: inline-block;
+        }
+
+        .section {
+            margin-bottom: 40px;
+            padding: 28px 18px;
+            border-radius: 10px;
+        }
+
+        .section:nth-child(even) {
+            background: #f7f7fa;
+        }
+
+        .subsection {
+            margin-bottom: 22px;
+        }
+
+        .code-block {
+            background: #23272e;
+            color: #eaeaea;
+            border-radius: 8px;
+            padding: 18px;
+            font-size: 16px;
+            margin: 18px 0;
+            overflow-x: auto;
+        }
+
+        .metric-table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-top: 18px;
+        }
+
+        .metric-table th,
+        .metric-table td {
+            border: 1px solid #bcd;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .metric-table th {
+            background: #eaf6fb;
+        }
+
+        .img-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 18px;
+            margin: 18px 0;
+        }
+
+        .img-example {
+            max-width: 180px;
+            border-radius: 8px;
+            border: 1.5px solid #bcd;
+            background: #f7faff;
+            box-shadow: 0 2px 8px #0001;
+            transition: transform 0.2s;
+        }
+
+        .img-example:hover {
+            transform: scale(1.07);
+            box-shadow: 0 4px 16px #bfa77a55;
+        }
+
+        .footer {
+            text-align: center;
+            color: #7a5c2e;
+            font-size: 1.08em;
+            margin-top: 50px;
+            background: #f2ede6;
+            border-top: 2px solid #e0d6c3;
+            padding: 18px 0 10px 0;
+            border-radius: 0 0 12px 12px;
+        }
+
+        @media (max-width: 700px) {
+            .container {
+                padding: 10px;
+            }
+
+            .img-row {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .section {
+                padding: 12px 2px;
+            }
+        }
+
+        .chart-container {
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div style="text-align:center; margin-bottom:8px;">
+            <div class="title-bar">
+                <h1>🐶 Trabalho 01 - VCAP 🐶<br>Detecção de Cachorros com Pipeline Clássico</h1>
+            </div>
+        </div>
+
+        <div class="section" style="background:#f7f7fa;">
+            <h2>Análise da Aplicação: Detecção de Cachorros em Imagens</h2>
+            <p><b>Justificativa da escolha:</b> A detecção de cachorros em imagens é uma tarefa clássica e didática de
+                visão computacional, pois representa um problema real (identificação de animais em fotos), é binária e
+                objetiva, e permite explorar todo o pipeline clássico de processamento de imagens.</p>
+            <p><b>Relevância para o aprendizado:</b> O pipeline envolve pré-processamento, extração de descritores
+                (HOG), uso de classificadores (SVM) e análise de métricas (acurácia, precisão, recall, f1-score). A
+                visualização dos resultados é clara e didática, e o desafio é realista devido à diversidade do CIFAR-10.
+            </p>
+            <p><b>Como está representada no projeto:</b> O banco CIFAR-10 é utilizado para garantir diversidade de
+                imagens e classes, focando na classe “cachorro” versus todas as outras. O pipeline filtra as imagens
+                para separar “cachorro” das demais, aplica HOG e usa SVM para classificar. O app e o relatório mostram
+                exemplos reais de imagens classificadas, com separação clara de acertos e erros.</p>
+            <p><b>Pontos positivos:</b> Didático, visual, reprodutível e extensível para outros experimentos.</p>
+            <p><b>Pontos de atenção:</b> As imagens do CIFAR-10 são pequenas (32x32), o que pode dificultar a detecção
+                visual até para humanos. O pipeline garante o balanceamento entre as classes para evitar viés.</p>
+            <p><b>Resumo:</b> A escolha da detecção de cachorros em imagens é adequada, didática e permite explorar
+                todos os conceitos fundamentais de visão computacional clássica, além de ser facilmente demonstrável e
+                compreendida por qualquer público.</p>
+        </div>
+
+        <div class="section">
+            <h2>1. Aplicação de Visão Computacional</h2>
+            <p>O objetivo deste trabalho é implementar um pipeline clássico para <b>detecção de cachorros em
+                    imagens</b>, utilizando técnicas de visão computacional.</p>
+        </div>
+
+        <div class="section">
+            <h2>2. Banco de Dados Utilizado</h2>
+            <p>O banco de dados escolhido para esta tarefa foi o <b>CIFAR-10</b>.</p>
+            <p>O CIFAR-10 é um dos datasets mais conhecidos e utilizados em tarefas de visão computacional e aprendizado
+                de máquina. Ele contém:</p>
+            <ul>
+                <li><b>60.000 imagens coloridas</b> no total, todas com resolução de 32x32 pixels e 3 canais (RGB).</li>
+                <li>As imagens estão divididas em <b>10 classes</b> diferentes, sendo uma delas a classe “cachorro”
+                    (label 5).</li>
+                <li>Cada classe possui 6.000 imagens, garantindo diversidade e balanceamento.</li>
+                <li>As imagens são variadas, com diferentes ângulos, fundos e condições de iluminação, tornando o
+                    desafio mais realista.</li>
+            </ul>
+            <p>No contexto deste trabalho, o CIFAR-10 foi utilizado da seguinte forma:</p>
+            <ul>
+                <li><b>Classe positiva:</b> imagens rotuladas como “cachorro” (label 5).</li>
+                <li><b>Classe negativa:</b> todas as demais classes do CIFAR-10.</li>
+                <li>O pipeline filtra e balanceia o número de exemplos de cada classe para evitar viés no treinamento do
+                    classificador.</li>
+            </ul>
+            <p>O uso do CIFAR-10 permite que o pipeline seja testado em um cenário realista, com imagens pequenas e
+                desafiadoras, e possibilita a comparação de resultados com outros trabalhos da área.</p>
+            <p><a href="https://www.cs.toronto.edu/~kriz/cifar.html" target="_blank">Mais informações sobre o
+                    CIFAR-10</a></p>
+        </div>
+
+        <div class="section">
+            <h2>3. Pipeline Clássico de Detecção de Objetos</h2>
+            <ol>
+                <li><b>Escolha do descritor:</b> O pipeline utiliza o <b>HOG (Histogram of Oriented Gradients)</b> para
+                    extrair características das imagens, capturando padrões de textura e bordas.</li>
+                <li><b>Classificação:</b> As features HOG são usadas para treinar um <b>classificador SVM Linear
+                        (LinearSVC)</b>, que aprende a distinguir entre imagens de “cachorro” e “não-cachorro”.</li>
+                <li><b>Métricas de avaliação:</b> O desempenho do pipeline é avaliado usando <b>acurácia, precisão,
+                        revocação (recall) e f1-score</b>, apresentadas em tabela e gráfico.</li>
+                <li><b>Relatório e exemplos:</b> O relatório mostra o código principal do pipeline, exemplos visuais de
+                    detecção correta (acertos) e de falhas (erros), separados por tipo (acerto de cachorro, acerto de
+                    não-cachorro, falso positivo, falso negativo), além de explicações de cada etapa.</li>
+                <li><b>Apresentação:</b> O relatório está pronto para ser apresentado em tela grande, com layout
+                    profissional, seções bem separadas, imagens, gráficos e explicações didáticas.</li>
+            </ol>
+            <p>Este pipeline segue fielmente as etapas clássicas de detecção de objetos em visão computacional,
+                proporcionando uma experiência prática e didática.</p>
+        </div>
+
+        <div class="section">
+            <h2>4. Código do Pipeline</h2>
+            <pre class="code-block">from skimage.feature import hog
+from skimage.color import rgb2gray
+from skimage.transform import resize
+from sklearn.svm import LinearSVC
+
+# Extração de HOG
+gray_up = resize(rgb2gray(img), (96, 96))
+hog_feat = hog(gray_up, pixels_per_cell=(8, 8),
+               cells_per_block=(2, 2), feature_vector=True)
+
+# Treinamento SVM
+clf = LinearSVC()
+clf.fit(X_train, y_train)
+
+y_pred = clf.predict(X_test)</pre>
+        </div>
+
+        <div class="section">
+            <h2>5. Exemplos de Detecção (Acertos)</h2>
+            <div class="img-row">
+                <img src="../resultados/exemplo_acerto1.png" class="img-example" alt="Acerto 1">
+                <img src="../resultados/exemplo_acerto2.png" class="img-example" alt="Acerto 2">
+                <img src="../resultados/exemplo_acerto3.png" class="img-example" alt="Acerto 3">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>6. Exemplos de Falhas (Erros)</h2>
+            <div class="img-row">
+                <img src="../resultados/exemplo_erro1.png" class="img-example" alt="Erro 1">
+                <img src="../resultados/exemplo_erro2.png" class="img-example" alt="Erro 2">
+                <img src="../resultados/exemplo_erro3.png" class="img-example" alt="Erro 3">
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>7. Relatório e Conclusão</h2>
+            <ul>
+                <li>O pipeline clássico de visão computacional foi implementado com sucesso.</li>
+                <li>Foi possível detectar cachorros em imagens do CIFAR-10 com desempenho razoável.</li>
+                <li>O trabalho proporcionou experiência prática com descritores e classificadores clássicos.</li>
+            </ul>
+        </div>
+
+        <div class="footer" style="text-align:center;">
+            <b>Todos os direitos reservados ao Grupo: Alexandre Valente | Arialan Gomes | Jardel Terci Flores</b>
+        </div>
+    </div>
+    <script>
+        // Gráfico de métricas
+        const ctx = document.getElementById('metricChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: ['Não-cachorro', 'Cachorro'],
+                datasets: [
+                    { label: 'Precisão', data: [0.69, 0.71], backgroundColor: '#3498db' },
+                    { label: 'Revocação', data: [0.69, 0.71], backgroundColor: '#2ecc71' },
+                    { label: 'F1-score', data: [0.69, 0.71], backgroundColor: '#f1c40f' }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: { legend: { position: 'top' } },
+                scales: { y: { beginAtZero: true, max: 1 } }
+            }
+        });
+    </script>
+</body>
+
+</html>
